@@ -1,0 +1,18 @@
+{
+  "id": "forge-compendium-browser",
+  "title": "Conflict Module Title",
+  "description": "A test module with an ID matching an existing Bazaar package (forge-compendium-browser).",
+  "authors": [
+    {
+      "name": "Module Author Name"
+    }
+  ],
+  "url": "https://github.com/WebMaestroFr/test-foundry-modules",
+  "manifest": "https://raw.githubusercontent.com/WebMaestroFr/test-foundry-modules/main/conflict-id/module.json",
+  "download": "https://raw.githubusercontent.com/WebMaestroFr/test-foundry-modules/main/conflict-id/conflict-id.zip",
+  "version": "1.0.0",
+  "compatibility": {
+    "minimum": "11",
+    "verified": "12"
+  }
+}

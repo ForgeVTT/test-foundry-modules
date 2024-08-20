@@ -1,0 +1,18 @@
+{
+  "id": "test-module-id",
+  "title": "Test Module Title",
+  "description": "Test module description. Lorem ipsum dolor sit amet.",
+  "authors": [
+    {
+      "name": "Module Author Name"
+    }
+  ],
+  "url": "https://github.com/WebMaestroFr/test-foundry-modules",
+  "manifest": "https://raw.githubusercontent.com/WebMaestroFr/test-foundry-modules/main/test-module/module.json",
+  "download": "https://raw.githubusercontent.com/WebMaestroFr/test-foundry-modules/main/test-module/test-module.zip",
+  "version": "1.0.0",
+  "compatibility": {
+    "minimum": "11",
+    "verified": "12"
+  }
+}
