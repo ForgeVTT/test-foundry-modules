@@ -13,35 +13,30 @@ jobs:
       - name: ⬇️ Checkout
         uses: actions/checkout@v4
 
-      - name: ⚙️ Use Node 12
-        uses: actions/setup-node@v4
-
       - name: 📖 Update README.md
-        # Runs a set of commands to list the following template for each ./{module-name}/module.json file in this repository:
-        # # {module.title}
-        #
-        # {module.description}
-        #
-        # ```
-        # https://raw.githubusercontent.com/WebMaestroFr/test-foundry-modules/main/{module-name}/module.json
-        # ```
         run: |
           echo "# Test Modules" > README.md
           echo "" >> README.md
+
           for file in */module.json; do
-            title=$(jq -r '.title' $file)
-            description=$(jq -r '.description' $file)
-            echo "## $title" >> README.md
-            echo "" >> README.md
-            echo "$description" >> README.md
-            echo "" >> README.md
-            echo "```" >> README.md
-            echo "https://raw.githubusercontent.com/${GITHUB_REPOSITORY}/main/[${file%/*}/module.json](https://raw.githubusercontent.com/${GITHUB_REPOSITORY}/main/${file%/*}/module.json)" >> README.md
-            echo "```" >> README.md
-            echo "" >> README.md
+              title=$(jq -r '.title' "$file")
+              description=$(jq -r '.description' "$file")
+              module=$(dirname "$file")
+              url="https://raw.githubusercontent.com/${GITHUB_REPOSITORY}/main/${module}/module.json"
+              link="[${module}/module.json](${url})"
+              
+              echo "## $title" >> README.md
+              echo "" >> README.md
+              echo "$description" >> README.md
+              echo "" >> README.md
+              echo "```" >> README.md
+              echo "$url" >> README.md
+              echo "```" >> README.md
+              echo "" >> README.md
           done
+
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
-          git add .
+          git add README.md
           git commit -m "Automated update of modules list in README.md"
           git push
