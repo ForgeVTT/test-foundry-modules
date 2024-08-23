@@ -1,7 +1,7 @@
 {
   "id": "test-module-id",
   "title": "Test Module Title",
-  "description": "Test module description. Lorem ipsum dolor sit amet.",
+  "description": "An empty module with a minimal manifest.",
   "authors": [
     {
       "name": "Module Author Name"
