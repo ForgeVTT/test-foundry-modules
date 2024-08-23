@@ -28,7 +28,7 @@ jobs:
         run: |
           echo "# Test Modules" > README.md
           echo "" >> README.md
-          for file in ./*/module.json; do
+          for file in */module.json; do
             title=$(jq -r '.title' $file)
             description=$(jq -r '.description' $file)
             echo "## $title" >> README.md
@@ -36,7 +36,7 @@ jobs:
             echo "$description" >> README.md
             echo "" >> README.md
             echo "```" >> README.md
-            echo "https://raw.githubusercontent.com/${GITHUB_REPOSITORY}/main/${file%/*}/module.json" >> README.md
+            echo "https://raw.githubusercontent.com/${GITHUB_REPOSITORY}/main/[${file%/*}/module.json](https://raw.githubusercontent.com/${GITHUB_REPOSITORY}/main/${file%/*}/module.json)" >> README.md
             echo "```" >> README.md
             echo "" >> README.md
           done
