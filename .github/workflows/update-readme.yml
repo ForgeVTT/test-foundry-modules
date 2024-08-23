@@ -23,9 +23,8 @@ jobs:
               description=$(jq -r '.description' "$file")
               module=$(dirname "$file")
               url="https://raw.githubusercontent.com/${GITHUB_REPOSITORY}/main/${module}/module.json"
-              link="[${module}/module.json](${url})"
               
-              echo "## $title" >> README.md
+              echo "## [$title]($url)" >> README.md
               echo "" >> README.md
               echo "$description" >> README.md
               echo "" >> README.md
