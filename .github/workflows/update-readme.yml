@@ -2,8 +2,8 @@ name: List Modules in README.md
 
 on:
   push:
-    # branches:
-    #   - main
+    branches:
+      - main
 
 jobs:
   update-readme:
@@ -23,14 +23,13 @@ jobs:
               description=$(jq -r '.description' "$file")
               module=$(dirname "$file")
               url="https://raw.githubusercontent.com/${GITHUB_REPOSITORY}/main/${module}/module.json"
+              link="https://raw.githubusercontent.com/${GITHUB_REPOSITORY}/main/[${module}/module.json]($url)"
 
-              echo "## [$title]($url)" >> README.md
+              echo "## $title" >> README.md
               echo "" >> README.md
               echo "$description" >> README.md
               echo "" >> README.md
-              echo '```' >> README.md
-              echo "$url" >> README.md
-              echo '```' >> README.md
+              echo '`$link`' >> README.md
               echo "" >> README.md
           done
 
