@@ -1,7 +1,7 @@
 {
   "id": "forge-compendium-browser",
-  "title": "Conflict Module Title",
-  "description": "A test module with an ID matching an existing Bazaar package (`forge-compendium-browser`).",
+  "title": "Conflict Name Module",
+  "description": "A test module with an ID matching an existing Bazaar package name (`forge-compendium-browser`).",
   "authors": [
     {
       "name": "Module Author Name"

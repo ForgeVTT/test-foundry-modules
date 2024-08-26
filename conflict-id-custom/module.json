@@ -1,0 +1,18 @@
+{
+  "id": "dlopen",
+  "title": "Conflict Custom Module",
+  "description": "A test module with an ID matching a Bazaar \"custom\" dependency module (`dlopen`).",
+  "authors": [
+    {
+      "name": "Module Author Name"
+    }
+  ],
+  "url": "https://github.com/WebMaestroFr/test-foundry-modules",
+  "manifest": "https://raw.githubusercontent.com/WebMaestroFr/test-foundry-modules/main/conflict-id-custom/module.json",
+  "download": "https://raw.githubusercontent.com/WebMaestroFr/test-foundry-modules/main/conflict-id-custom/conflict-id-custom.zip",
+  "version": "1.0.0",
+  "compatibility": {
+    "minimum": "11",
+    "verified": "12"
+  }
+}
