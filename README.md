@@ -12,12 +12,6 @@ A test module with an ID matching an existing Bazaar package name (`forge-compen
 
 https://raw.githubusercontent.com/WebMaestroFr/test-foundry-modules/main/conflict-id/module.json
 
-## Premium Module Title
-
-A "premium" module with the `protected` property.
-
-https://raw.githubusercontent.com/WebMaestroFr/test-foundry-modules/main/premium-protected/module.json
-
 ## Test Module Title
 
 An empty module with a minimal manifest.
