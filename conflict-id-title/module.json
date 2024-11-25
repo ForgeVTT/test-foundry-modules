@@ -1,7 +1,7 @@
 {
   "id": "forge-compendium-browser",
   "title": "The Forge: Compendium Library",
-  "description": "A test module with an ID and title matching an existing Bazaar package name (`forge-compendium-browser`).",
+  "description": "A test module with an ID and title matching an existing Bazaar package name and title (`forge-compendium-browser`).",
   "authors": [
     {
       "name": "Module Author Name"
