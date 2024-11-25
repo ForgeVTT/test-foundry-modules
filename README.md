@@ -8,7 +8,7 @@ https://raw.githubusercontent.com/WebMaestroFr/test-foundry-modules/main/conflic
 
 ## The Forge: Compendium Library
 
-A test module with an ID and title matching an existing Bazaar package name (`forge-compendium-browser`).
+A test module with an ID and title matching an existing Bazaar package name and title (`forge-compendium-browser`).
 
 https://raw.githubusercontent.com/WebMaestroFr/test-foundry-modules/main/conflict-id-title/module.json
 
