@@ -1,4 +1,4 @@
-# Test Modules
+# Test Packages
 
 ## Conflict Custom Module
 
@@ -17,4 +17,16 @@ https://raw.githubusercontent.com/WebMaestroFr/test-foundry-modules/main/conflic
 An empty module with a minimal manifest.
 
 https://raw.githubusercontent.com/WebMaestroFr/test-foundry-modules/main/test-module/module.json
+
+## Conflict Name System
+
+A test system with an ID matching an existing Bazaar package name (`dnd5e`).
+
+https://raw.githubusercontent.com/WebMaestroFr/test-foundry-modules/main/conflict-id-system/system.json
+
+## Test System Title
+
+An empty system with a minimal manifest.
+
+https://raw.githubusercontent.com/WebMaestroFr/test-foundry-modules/main/test-system/system.json
 
