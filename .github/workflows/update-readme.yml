@@ -15,25 +15,43 @@ jobs:
 
       - name: 📖 Update README.md
         run: |
-          echo "# Test Modules" > README.md
+          echo "# Test Packages" > README.md
           echo "" >> README.md
 
           for file in */module.json; do
-              title=$(jq -r '.title' "$file")
-              description=$(jq -r '.description' "$file")
-              module=$(dirname "$file")
-              url="https://raw.githubusercontent.com/${GITHUB_REPOSITORY}/main/${module}/module.json"
+              if [ -f "$file" ]; then
+                  title=$(jq -r '.title' "$file")
+                  description=$(jq -r '.description' "$file")
+                  module=$(dirname "$file")
+                  url="https://raw.githubusercontent.com/${GITHUB_REPOSITORY}/main/${module}/module.json"
 
-              echo "## $title" >> README.md
-              echo "" >> README.md
-              echo "$description" >> README.md
-              echo "" >> README.md
-              echo "$url" >> README.md
-              echo "" >> README.md
+                  echo "## $title" >> README.md
+                  echo "" >> README.md
+                  echo "$description" >> README.md
+                  echo "" >> README.md
+                  echo "$url" >> README.md
+                  echo "" >> README.md
+              fi
+          done
+
+          for file in */system.json; do
+              if [ -f "$file" ]; then
+                  title=$(jq -r '.title' "$file")
+                  description=$(jq -r '.description' "$file")
+                  system=$(dirname "$file")
+                  url="https://raw.githubusercontent.com/${GITHUB_REPOSITORY}/main/${system}/system.json"
+
+                  echo "## $title" >> README.md
+                  echo "" >> README.md
+                  echo "$description" >> README.md
+                  echo "" >> README.md
+                  echo "$url" >> README.md
+                  echo "" >> README.md
+              fi
           done
 
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
           git add README.md
-          git commit -m "Automated update of modules list in README.md"
+          git commit -m "Update (automated) of the list of packages in README.md"
           git push
