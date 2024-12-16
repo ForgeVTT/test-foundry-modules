@@ -1,0 +1,18 @@
+{
+  "id": "dnd5e",
+  "title": "Conflict Name System",
+  "description": "A test system with an ID matching an existing Bazaar package name (`dnd5e`).",
+  "authors": [
+    {
+      "name": "System Author Name"
+    }
+  ],
+  "url": "https://github.com/WebMaestroFr/test-foundry-modules",
+  "manifest": "https://raw.githubusercontent.com/WebMaestroFr/test-foundry-modules/main/conflict-id-system/system.json",
+  "download": "https://raw.githubusercontent.com/WebMaestroFr/test-foundry-modules/main/conflict-id-system/conflict-id-system.zip",
+  "version": "1.0.0",
+  "compatibility": {
+    "minimum": "11",
+    "verified": "12"
+  }
+}
