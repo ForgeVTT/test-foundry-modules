@@ -17,7 +17,7 @@ let module;
 Hooks.once("init", () => {
   console.log("CROSS-IMPORT-MODULE: Initialization complete.");
 
-  module = game.modules.get("cross-import-module-id");
+  module = game.modules.get("cross-import-module");
   module.application = new ModuleApplication();
   console.log("CROSS-IMPORT-MODULE: Application created.");
 

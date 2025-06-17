@@ -1,5 +1,5 @@
 {
-  "id": "cross-import-module-id",
+  "id": "cross-import-module",
   "title": "Cross Import Module",
   "description": "A module with cross-package relative imports.",
   "authors": [
