@@ -12,6 +12,12 @@ A test module with an ID matching an existing Bazaar package name (`forge-compen
 
 https://raw.githubusercontent.com/WebMaestroFr/test-foundry-modules/main/conflict-id/module.json
 
+## Cross Import Module
+
+A module with cross-package relative imports.
+
+https://raw.githubusercontent.com/WebMaestroFr/test-foundry-modules/main/cross-import-module/module.json
+
 ## Test Module Title
 
 An empty module with a minimal manifest.
