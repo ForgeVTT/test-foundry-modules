@@ -6,8 +6,16 @@
 <section>
   <ul>
     <li>
-      Internal dependency:
+      Import internal dependency:
       {{#if this.internalDependency}}✔️{{else}}❌{{/if}}
+    </li>
+    <li>
+      Import same package:
+      {{#if this.samePackage}}✔️{{else}}❌{{/if}}
+    </li>
+    <li>
+      Import Foundry script:
+      {{#if this.foundryScript}}✔️{{else}}❌{{/if}}
     </li>
   </ul>
 </section>

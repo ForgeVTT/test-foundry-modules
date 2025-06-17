@@ -22,6 +22,26 @@ class ModuleApplication extends Application {
         error
       );
     }
+    
+    try {
+      this.samePackage = (await import("/modules/cross-import-module/dependency.js")).default;
+      console.log("CROSS-IMPORT-MODULE: Imported same package dependency.");
+    } catch (error) {
+      console.error(
+        "CROSS-IMPORT-MODULE: Failed to import same package dependency.",
+        error
+      );
+    }
+
+    try {
+      this.foundryScript = !!((await import("/scripts/foundry.mjs")).default);
+      console.log("CROSS-IMPORT-MODULE: Imported foundry script.");
+    } catch (error) {
+      console.error(
+        "CROSS-IMPORT-MODULE: Failed to import foundry script.",
+        error
+      );
+    }
   }
 
   static get defaultOptions() {
@@ -29,8 +49,8 @@ class ModuleApplication extends Application {
       id: "cross-import-module",
       title: "Cross Import Module",
       template: `modules/cross-import-module/template.hbs`,
-      width: 720,
-      height: 720,
+      width: 480,
+      height: 240,
     });
   }
 }
