@@ -1,11 +1,34 @@
-import dependencyFunction from "./dependency";
-
 class ModuleApplication extends Application {
+  internalDependency;
+
+  constructor(options = {}) {
+    super(options);
+    this.internalDependency = false;
+  }
+
+  getData() {
+    return {
+      internalDependency: this.internalDependency,
+    };
+  }
+
+  async importDependencies() {
+    try {
+      this.internalDependency = (await import("./dependency.js")).default;
+      console.log("CROSS-IMPORT-MODULE: Imported internal dependency.");
+    } catch (error) {
+      console.error(
+        "CROSS-IMPORT-MODULE: Failed to import internal dependency.",
+        error
+      );
+    }
+  }
+
   static get defaultOptions() {
     return foundry.utils.mergeObject(super.defaultOptions, {
       id: "cross-import-module",
       title: "Cross Import Module",
-      template: `template.hbs`,
+      template: `modules/cross-import-module/template.hbs`,
       width: 720,
       height: 720,
     });
@@ -15,15 +38,13 @@ class ModuleApplication extends Application {
 let module;
 
 Hooks.once("init", () => {
-  console.log("CROSS-IMPORT-MODULE: Initialization complete.");
+  console.log("CROSS-IMPORT-MODULE: Initialization...");
 
   module = game.modules.get("cross-import-module");
   module.application = new ModuleApplication();
-  console.log("CROSS-IMPORT-MODULE: Application created.");
+  module.application.importDependencies().then(() => {
 
-  module.internalDependency = dependencyFunction();
-  console.log("CROSS-IMPORT-MODULE: Imported internal dependency.");
-
-  module.application.render(true);
-  console.log("CROSS-IMPORT-MODULE: Application created and rendered.");
+    module.application.render(true);
+    console.log("CROSS-IMPORT-MODULE: Application rendered.");
+  });
 });
