@@ -30,6 +30,12 @@ A test system with an ID matching an existing Bazaar package name (`dnd5e`).
 
 https://raw.githubusercontent.com/ForgeVTT/test-foundry-modules/main/conflict-id-system/system.json
 
+## Cross Import System
+
+A system with cross-package relative imports.
+
+https://raw.githubusercontent.com/ForgeVTT/test-foundry-modules/main/cross-import-system/system.json
+
 ## Test System Title
 
 An empty system with a minimal manifest.
