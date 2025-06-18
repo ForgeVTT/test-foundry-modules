@@ -7,9 +7,9 @@
       "name": "Module Author Name"
     }
   ],
-  "url": "https://github.com/WebMaestroFr/test-foundry-modules",
-  "manifest": "https://raw.githubusercontent.com/WebMaestroFr/test-foundry-modules/main/cross-import-module/module.json",
-  "download": "https://raw.githubusercontent.com/WebMaestroFr/test-foundry-modules/main/cross-import-module/cross-import-module.zip",
+  "url": "https://github.com/ForgeVTT/test-foundry-modules",
+  "manifest": "https://raw.githubusercontent.com/ForgeVTT/test-foundry-modules/main/cross-import-module/module.json",
+  "download": "https://raw.githubusercontent.com/ForgeVTT/test-foundry-modules/main/cross-import-module/cross-import-module.zip",
   "version": "1.0.0",
   "compatibility": {
     "minimum": "12",
@@ -21,7 +21,7 @@
       {
         "id": "cross-import-system",
         "type": "system",
-        "manifest": "https://raw.githubusercontent.com/WebMaestroFr/test-foundry-modules/main/cross-import-system/system.json",
+        "manifest": "https://raw.githubusercontent.com/ForgeVTT/test-foundry-modules/main/cross-import-system/system.json",
         "compatibility": {
           "verified": "1.0.0"
         }

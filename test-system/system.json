@@ -7,9 +7,9 @@
       "name": "System Author Name"
     }
   ],
-  "url": "https://github.com/WebMaestroFr/test-foundry-modules",
-  "manifest": "https://raw.githubusercontent.com/WebMaestroFr/test-foundry-modules/main/test-system/system.json",
-  "download": "https://raw.githubusercontent.com/WebMaestroFr/test-foundry-modules/main/test-system/test-system.zip",
+  "url": "https://github.com/ForgeVTT/test-foundry-modules",
+  "manifest": "https://raw.githubusercontent.com/ForgeVTT/test-foundry-modules/main/test-system/system.json",
+  "download": "https://raw.githubusercontent.com/ForgeVTT/test-foundry-modules/main/test-system/test-system.zip",
   "version": "1.0.0",
   "compatibility": {
     "minimum": "11",
