@@ -9,6 +9,9 @@ class SystemApplication extends Application {
   getData() {
     return {
       internalDependency: this.internalDependency,
+      samePackage: this.samePackage,
+      otherPackage: this.otherPackage,
+      foundryScript: this.foundryScript,
     };
   }
 
@@ -65,16 +68,12 @@ class SystemApplication extends Application {
   }
 }
 
-let system;
-
 Hooks.once("init", () => {
   console.log("CROSS-IMPORT-SYSTEM: Initialization...");
 
-  system = game.systems.get("cross-import-system");
-  system.application = new SystemApplication();
-  system.application.importDependencies().then(() => {
-
-    system.application.render(true);
+  const application = new SystemApplication();
+  application.importDependencies().then(() => {
+    application.render(true);
     console.log("CROSS-IMPORT-SYSTEM: Application rendered.");
   });
 });

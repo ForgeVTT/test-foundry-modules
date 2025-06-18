@@ -15,17 +15,5 @@
     "minimum": "12",
     "verified": "13"
   },
-  "esmodules": ["esmodule.js"],
-  "relationships": {
-    "systems": [
-      {
-        "id": "cross-import-system",
-        "type": "system",
-        "manifest": "https://raw.githubusercontent.com/ForgeVTT/test-foundry-modules/main/cross-import-system/system.json",
-        "compatibility": {
-          "verified": "1.0.0"
-        }
-      }
-    ]
-  }
+  "esmodules": ["esmodule.js"]
 }
