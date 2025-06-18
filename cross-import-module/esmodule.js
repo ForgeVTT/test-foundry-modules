@@ -32,6 +32,16 @@ class ModuleApplication extends Application {
         error
       );
     }
+    
+    try {
+      this.otherPackage = (await import("/systems/cross-import-system/dependency.js")).default;
+      console.log("CROSS-IMPORT-MODULE: Imported other package dependency.");
+    } catch (error) {
+      console.error(
+        "CROSS-IMPORT-MODULE: Failed to import other package dependency.",
+        error
+      );
+    }
 
     try {
       this.foundryScript = !!((await import("/scripts/foundry.mjs")).default);
