@@ -25,9 +25,11 @@ class SystemApplication extends Application {
         error
       );
     }
-    
+
     try {
-      this.samePackage = (await import("/systems/cross-import-system/dependency.js")).default;
+      this.samePackage = (
+        await import("/systems/cross-import-system/dependency.js")
+      ).default;
       console.log("CROSS-IMPORT-SYSTEM: Imported same package dependency.");
     } catch (error) {
       console.error(
@@ -35,9 +37,11 @@ class SystemApplication extends Application {
         error
       );
     }
-    
+
     try {
-      this.otherPackage = (await import("/modules/cross-import-module/dependency.js")).default;
+      this.otherPackage = (
+        await import("/modules/cross-import-module/dependency.js")
+      ).default;
       console.log("CROSS-IMPORT-SYSTEM: Imported other package dependency.");
     } catch (error) {
       console.error(
@@ -47,7 +51,7 @@ class SystemApplication extends Application {
     }
 
     try {
-      this.foundryScript = !!((await import("/scripts/foundry.mjs")).default);
+      this.foundryScript = !!(await import("/scripts/foundry.mjs")).default;
       console.log("CROSS-IMPORT-SYSTEM: Imported foundry script.");
     } catch (error) {
       console.error(

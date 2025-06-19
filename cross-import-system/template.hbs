@@ -7,19 +7,23 @@
   <ul>
     <li>
       {{#if this.internalDependency}}✔️{{else}}❌{{/if}}
-      Import internal dependency <small>(<em>./dependency.js</em>)</small>
+      Import internal dependency
+      <small>(<em>./dependency.js</em>)</small>
     </li>
     <li>
       {{#if this.samePackage}}✔️{{else}}❌{{/if}}
-      Import same package <small>(<em>/modules/cross-import-system/dependency.js</em>)</small>
+      Import same package
+      <small>(<em>/systems/cross-import-system/dependency.js</em>)</small>
     </li>
     <li>
       {{#if this.otherPackage}}✔️{{else}}❌{{/if}}
-      Import other package <small>(<em>/modules/cross-import-module/dependency.js</em>)</small>
+      Import other package
+      <small>(<em>/modules/cross-import-module/dependency.js</em>)</small>
     </li>
     <li>
       {{#if this.foundryScript}}✔️{{else}}❌{{/if}}
-      Import Foundry script <small>(<em>/scripts/foundry.mjs</em>)</small>
+      Import Foundry script
+      <small>(<em>/scripts/foundry.mjs</em>)</small>
     </li>
   </ul>
 </section>
