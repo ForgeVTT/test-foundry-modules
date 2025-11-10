@@ -18,6 +18,12 @@ A module with cross-package relative imports.
 
 https://raw.githubusercontent.com/ForgeVTT/test-foundry-modules/main/cross-import-module/module.json
 
+## Persistent Storage Module
+
+A module with persistent storage.
+
+https://raw.githubusercontent.com/ForgeVTT/test-foundry-modules/main/persistent-storage-module/module.json
+
 ## Test Module Title
 
 An empty module with a minimal manifest.
