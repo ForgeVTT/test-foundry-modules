@@ -15,6 +15,8 @@ jobs:
 
       - name: 📖 Update README.md
         run: |
+          set -euo pipefail
+
           echo "# Test Packages" > README.md
           echo "" >> README.md
 
@@ -53,5 +55,9 @@ jobs:
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
           git add README.md
-          git commit -m "chore: Update the list of packages in README.md (automated)"
-          git push
+          if git diff --cached --quiet; then
+            echo "No README.md changes to commit."
+          else
+            git commit -m "chore: Update the list of packages in README.md (automated)"
+            git push
+          fi

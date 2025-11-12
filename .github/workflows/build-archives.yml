@@ -31,10 +31,7 @@ jobs:
             zip_path="${d}/${d}.zip"
             tmp_path="${zip_path}.tmp"
 
-            git archive \
-              --format=zip \
-              -o "${tmp_path}" \
-              HEAD -- "${d}" ":(exclude)${d}/*.zip"
+            (cd "$d" && zip -rqX "../${tmp_path}" . -x "*.zip")
 
             if [[ ! -f "${zip_path}" ]] || ! cmp -s "${tmp_path}" "${zip_path}"; then
               mv "${tmp_path}" "${zip_path}"
