@@ -148,23 +148,22 @@ jobs:
           changed=0
           shopt -s nullglob
 
-          for vd in versions/*-v*/ ; do
-            [[ -d "$vd" ]] || continue
-            vd="${vd%/}"
+          for version_dir in versions/*-v*/ ; do
+            [[ -d "$version_dir" ]] || continue
+            version_dir="${version_dir%/}"
 
-            name="$(basename "$vd")"              # e.g. test-module-v0
-            base="${name%*-v[0-9]*}"              # e.g. test-module (best-effort)
-            zip_path="${vd}/${name}.zip"          # e.g. versions/test-module-v0/test-module-v0.zip
-            tmp_zip="${zip_path}.tmp"
+            name="$(basename "$version_dir")"
+            zip_path="${version_dir}/${name}.zip"
+            tmp_name="${name}.zip.tmp"
 
-            (cd "$vd" && zip -rqX "../${tmp_zip}" . -x "*.zip" -x "versions/*")
+            (cd "$version_dir" && zip -rqX "$tmp_name" . -x "*.zip" -x "versions/*")
 
-            if [[ ! -f "$zip_path" ]] || ! cmp -s "$tmp_zip" "$zip_path"; then
-              mv "$tmp_zip" "$zip_path"
+            if [[ ! -f "$zip_path" ]] || ! cmp -s "$version_dir/$tmp_name" "$zip_path"; then
+              mv "$version_dir/$tmp_name" "$zip_path"
               echo "Updated version ZIP: $zip_path"
               changed=1
             else
-              rm -f "$tmp_zip"
+              rm -f "$version_dir/$tmp_name"
               echo "No ZIP changes: $zip_path"
             fi
           done
