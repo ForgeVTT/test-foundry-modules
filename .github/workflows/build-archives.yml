@@ -1,0 +1,57 @@
+name: Build package ZIPs
+
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  build-zips:
+    name: 📦 Build package ZIPs
+    runs-on: ubuntu-latest
+    steps:
+      - name: ⬇️ Checkout
+        uses: actions/checkout@v4
+
+      - name: 📁 Generate ZIPs
+        shell: bash
+        run: |
+          set -euo pipefail
+          changed=0
+
+          shopt -s nullglob
+          for d in */ ; do
+            [[ "$d" = .* ]] && continue
+            d="${d%/}"
+
+            zip_path="${d}/${d}.zip"
+            tmp_path="${zip_path}.tmp"
+
+            git archive \
+              --format=zip \
+              -o "${tmp_path}" \
+              HEAD -- "${d}" ":(exclude)${d}/*.zip"
+
+            if [[ ! -f "${zip_path}" ]] || ! cmp -s "${tmp_path}" "${zip_path}"; then
+              mv "${tmp_path}" "${zip_path}"
+              echo "Updated: ${zip_path}"
+              changed=1
+            else
+              rm -f "${tmp_path}"
+              echo "No changes: ${zip_path}"
+            fi
+          done
+
+          if [[ "${changed}" -eq 1 ]]; then
+            git config user.name "github-actions[bot]"
+            git config user.email "github-actions[bot]@users.noreply.github.com"
+            git add */*.zip
+            git commit -m "chore: rebuild package ZIPs (automated)"
+            git push
+          else
+            echo "No ZIP changes to commit."
+          fi
