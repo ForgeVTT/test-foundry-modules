@@ -9,9 +9,9 @@
     "verified": "12"
   },
   "description": "A test system with an ID matching an existing Bazaar package name (`dnd5e`).",
-  "download": "https://raw.githubusercontent.com/ForgeVTT/test-foundry-modules/main/conflict-id-system/conflict-id-system.zip",
+  "download": "https://raw.githubusercontent.com/ForgeVTT/test-foundry-modules/main/.versions/conflict-id-system-v0/conflict-id-system.zip",
   "id": "dnd5e",
-  "manifest": "https://raw.githubusercontent.com/ForgeVTT/test-foundry-modules/main/conflict-id-system/system.json",
+  "manifest": "https://raw.githubusercontent.com/ForgeVTT/test-foundry-modules/main/.versions/conflict-id-system-v0/system.json",
   "title": "Conflict Name System",
   "url": "https://github.com/ForgeVTT/test-foundry-modules",
   "version": "0.0.1"

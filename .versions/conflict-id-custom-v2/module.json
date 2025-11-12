@@ -9,9 +9,9 @@
     "verified": "12"
   },
   "description": "A test module with an ID matching a Bazaar \"custom\" dependency module (`dlopen`).",
-  "download": "https://raw.githubusercontent.com/ForgeVTT/test-foundry-modules/main/conflict-id-custom/conflict-id-custom.zip",
+  "download": "https://raw.githubusercontent.com/ForgeVTT/test-foundry-modules/main/.versions/conflict-id-custom-v2/conflict-id-custom.zip",
   "id": "dlopen",
-  "manifest": "https://raw.githubusercontent.com/ForgeVTT/test-foundry-modules/main/conflict-id-custom/module.json",
+  "manifest": "https://raw.githubusercontent.com/ForgeVTT/test-foundry-modules/main/.versions/conflict-id-custom-v2/module.json",
   "title": "Conflict Custom Module",
   "url": "https://github.com/ForgeVTT/test-foundry-modules",
   "version": "2.0.1"
