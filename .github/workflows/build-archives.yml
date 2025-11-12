@@ -1,4 +1,4 @@
-name: Build package ZIPs
+name: Build package versions
 
 on:
   push:
@@ -9,46 +9,127 @@ on:
 permissions:
   contents: write
 
+concurrency:
+  group: build-zips-${{ github.ref }}
+  cancel-in-progress: false
+
 jobs:
-  build-zips:
-    name: 📦 Build package ZIPs
+  build:
+    name: 📦 Build package versions
     runs-on: ubuntu-latest
     steps:
       - name: ⬇️ Checkout
         uses: actions/checkout@v4
 
-      - name: 📁 Generate ZIPs
+      - name: 🧩 Create versioned copies
         shell: bash
         run: |
           set -euo pipefail
-          changed=0
 
+          ensure_version() {
+            # $1 = dir to patch (contains module.json or system.json)
+            local dir="$1"
+            local json=""
+            if [[ -f "$dir/module.json" ]]; then
+              json="$dir/module.json"
+            elif [[ -f "$dir/system.json" ]]; then
+              json="$dir/system.json"
+            else
+              return 0
+            fi
+            local tmp="${json}.tmp"
+            jq -S '.version = env.NEW_VERSION' "$json" > "$tmp"
+            mv "$tmp" "$json"
+          }
+
+          changed=0
+          mkdir -p versions
           shopt -s nullglob
+
+          for d in */ ; do
+            [[ "$d" = .* ]] && continue
+            d="${d%/}"
+            name="$(basename "$d")"
+
+            for suffix in v0 v2; do
+              case "$suffix" in
+                v0) export NEW_VERSION="0.0.1" ;;
+                v2) export NEW_VERSION="2.0.1" ;;
+              esac
+
+              out="versions/${name}-${suffix}"
+              tmp_out="${out}.tmp"
+
+              rm -rf "$tmp_out"
+              mkdir -p "$tmp_out"
+              rsync -a --delete \
+                --exclude '*.zip' \
+                --exclude 'versions/' \
+                "${d}/" "$tmp_out/"
+
+              ensure_version "$tmp_out"
+
+              if ! diff -qr "$tmp_out" "$out" > /dev/null 2>&1; then
+                rm -rf "$out"
+                mv "$tmp_out" "$out"
+                echo "Updated: $out"
+                changed=1
+              else
+                rm -rf "$tmp_out"
+                echo "No changes: $out"
+              fi
+            done
+          done
+
+          if [[ "$changed" -eq 1 ]]; then
+            git config user.name "github-actions[bot]"
+            git config user.email "github-actions[bot]@users.noreply.github.com"
+            git add versions/
+            if git diff --cached --quiet; then
+              echo "No versioned changes to commit."
+            else
+              git commit -m "chore: Update versioned copies (automated)"
+              git push
+            fi
+          else
+            echo "No versioned copies changed."
+          fi
+
+      - name: 📦 Build ZIPs (deterministic, only if changed)
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          changed=0
+          shopt -s nullglob
+
           for d in */ ; do
             [[ "$d" = .* ]] && continue
             d="${d%/}"
 
             zip_path="${d}/${d}.zip"
-            tmp_path="${zip_path}.tmp"
+            tmp_zip="${zip_path}.tmp"
 
-            (cd "$d" && zip -rqX "../${tmp_path}" . -x "*.zip")
+            (cd "$d" && zip -rqX "../${tmp_zip}" . -x "*.zip" -x "versions/*")
 
-            if [[ ! -f "${zip_path}" ]] || ! cmp -s "${tmp_path}" "${zip_path}"; then
-              mv "${tmp_path}" "${zip_path}"
-              echo "Updated: ${zip_path}"
+            if [[ ! -f "$zip_path" ]] || ! cmp -s "$tmp_zip" "$zip_path"; then
+              mv "$tmp_zip" "$zip_path"
+              echo "Updated ZIP: $zip_path"
               changed=1
             else
-              rm -f "${tmp_path}"
-              echo "No changes: ${zip_path}"
+              rm -f "$tmp_zip"
+              echo "No ZIP changes: $zip_path"
             fi
           done
 
-          if [[ "${changed}" -eq 1 ]]; then
+          if [[ "$changed" -eq 1 ]]; then
             git config user.name "github-actions[bot]"
             git config user.email "github-actions[bot]@users.noreply.github.com"
             git add */*.zip
-            git commit -m "chore: Rebuild package ZIPs (automated)"
-            git push
+            if git diff --cached --quiet; then
+              echo "No ZIP changes to commit."
+            else
+              git commit -m "chore: rebuild package ZIPs (automated)"
+              git push
+            fi
           else
-            echo "No ZIP changes to commit."
-          fi
