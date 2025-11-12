@@ -9,12 +9,12 @@
     "verified": "13"
   },
   "description": "A system with cross-package relative imports.",
-  "download": "https://raw.githubusercontent.com/ForgeVTT/test-foundry-modules/main/cross-import-system/cross-import-system.zip",
+  "download": "https://raw.githubusercontent.com/ForgeVTT/test-foundry-modules/main/.versions/cross-import-system-v2/cross-import-system.zip",
   "esmodules": [
     "esmodule.js"
   ],
   "id": "cross-import-system",
-  "manifest": "https://raw.githubusercontent.com/ForgeVTT/test-foundry-modules/main/cross-import-system/system.json",
+  "manifest": "https://raw.githubusercontent.com/ForgeVTT/test-foundry-modules/main/.versions/cross-import-system-v2/system.json",
   "relationships": {
     "requires": [
       {

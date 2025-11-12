@@ -9,9 +9,9 @@
     "verified": "12"
   },
   "description": "A test module with an ID matching an existing Bazaar package name (`forge-compendium-browser`).",
-  "download": "https://raw.githubusercontent.com/ForgeVTT/test-foundry-modules/main/conflict-id/conflict-id.zip",
+  "download": "https://raw.githubusercontent.com/ForgeVTT/test-foundry-modules/main/.versions/conflict-id-v0/conflict-id.zip",
   "id": "forge-compendium-browser",
-  "manifest": "https://raw.githubusercontent.com/ForgeVTT/test-foundry-modules/main/conflict-id/module.json",
+  "manifest": "https://raw.githubusercontent.com/ForgeVTT/test-foundry-modules/main/.versions/conflict-id-v0/module.json",
   "title": "Conflict Name Module",
   "url": "https://github.com/ForgeVTT/test-foundry-modules",
   "version": "0.0.1"
