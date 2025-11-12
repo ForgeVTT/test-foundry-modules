@@ -1,0 +1,29 @@
+<section>
+  <header class="flex-header">
+    <h1>Cross Import Module</h1>
+  </header>
+</section>
+<section>
+  <ul>
+    <li>
+      {{#if this.internalDependency}}✔️{{else}}❌{{/if}}
+      Import internal dependency
+      <small>(<em>./dependency.js</em>)</small>
+    </li>
+    <li>
+      {{#if this.samePackage}}✔️{{else}}❌{{/if}}
+      Import same package
+      <small>(<em>/modules/cross-import-module/dependency.js</em>)</small>
+    </li>
+    <li>
+      {{#if this.otherPackage}}✔️{{else}}❌{{/if}}
+      Import other package
+      <small>(<em>/systems/cross-import-system/dependency.js</em>)</small>
+    </li>
+    <li>
+      {{#if this.foundryScript}}✔️{{else}}❌{{/if}}
+      Import Foundry script
+      <small>(<em>/scripts/foundry.mjs</em>)</small>
+    </li>
+  </ul>
+</section>
