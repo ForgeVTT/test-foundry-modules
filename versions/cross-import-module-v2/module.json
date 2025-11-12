@@ -1,0 +1,21 @@
+{
+  "authors": [
+    {
+      "name": "Module Author Name"
+    }
+  ],
+  "compatibility": {
+    "minimum": "12",
+    "verified": "13"
+  },
+  "description": "A module with cross-package relative imports.",
+  "download": "https://raw.githubusercontent.com/ForgeVTT/test-foundry-modules/main/cross-import-module/cross-import-module.zip",
+  "esmodules": [
+    "esmodule.js"
+  ],
+  "id": "cross-import-module",
+  "manifest": "https://raw.githubusercontent.com/ForgeVTT/test-foundry-modules/main/cross-import-module/module.json",
+  "title": "Cross Import Module",
+  "url": "https://github.com/ForgeVTT/test-foundry-modules",
+  "version": "2.0.1"
+}
