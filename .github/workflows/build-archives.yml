@@ -117,6 +117,40 @@ jobs:
         run: |
           set -euo pipefail
 
+          ensure_main_json() {
+            local dir="$1"
+            local pkg="$2"
+
+            local json=""
+            local json_base=""
+            if [[ -f "$dir/module.json" ]]; then
+              json="$dir/module.json"
+              json_base="module.json"
+            elif [[ -f "$dir/system.json" ]]; then
+              json="$dir/system.json"
+              json_base="system.json"
+            else
+              return 0
+            fi
+
+            export NEW_MAIN_VERSION="1.0.1"
+            export PKG_NAME="${pkg}"
+            export JSON_FILE_BASENAME="${json_base}"
+
+            local tmp="${json}.tmp"
+            jq -S '
+              .version  = env.NEW_MAIN_VERSION
+              | .download = ("https://raw.githubusercontent.com/" + env.GITHUB_REPOSITORY + "/main/" + env.PKG_NAME + "/" + env.PKG_NAME + ".zip")
+              | .manifest = ("https://raw.githubusercontent.com/" + env.GITHUB_REPOSITORY + "/main/" + env.PKG_NAME + "/" + env.JSON_FILE_BASENAME)
+            ' "$json" > "$tmp"
+            if ! cmp -s "$tmp" "$json"; then
+              mv "$tmp" "$json"
+              echo "Patched JSON for $pkg"
+            else
+              rm -f "$tmp"
+            fi
+          }
+
           changed=0
           shopt -s nullglob
 
@@ -126,6 +160,10 @@ jobs:
             esac
 
             d="${d%/}"
+            pkg="${d}"
+
+            ensure_main_json "$d" "$pkg"
+
             zip_path="${d}/${d}.zip"
             tmp_zip="${zip_path}.tmp"
 
@@ -144,15 +182,23 @@ jobs:
           if [[ "$changed" -eq 1 ]]; then
             git config user.name "github-actions[bot]"
             git config user.email "github-actions[bot]@users.noreply.github.com"
-            git add */*.zip
+            git add */*.zip */module.json */system.json 2>/dev/null || true
             if git diff --cached --quiet; then
-              echo "No ZIP changes to commit."
+              echo "No ZIP or JSON changes to commit."
             else
-              git commit -m "chore: Rebuild package ZIPs (automated)"
+              git commit -m "chore: Rebuild packages (automated)"
               git push
             fi
           else
-            echo "No ZIP changes to commit."
+            git add */module.json */system.json 2>/dev/null || true
+            if git diff --cached --quiet; then
+              echo "No changes to commit."
+            else
+              git config user.name "github-actions[bot]"
+              git config user.email "github-actions[bot]@users.noreply.github.com"
+              git commit -m "chore: Update main manifests (automated)"
+              git push
+            fi
           fi
 
       - name: 🗂️ Build version ZIPs
