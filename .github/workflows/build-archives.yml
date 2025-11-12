@@ -114,18 +114,19 @@ jobs:
 
             if build_zip "$d" "$d/$pkg.zip"; then changed=1; fi
 
-            for suffix ver in v0 0.0.1 v2 2.0.1; do
+            for suffix in v0 v2; do
+              if [[ "$suffix" == "v0" ]]; then ver="0.0.1"; else ver="2.0.1"; fi
               out=".versions/${pkg}-${suffix}"
               tmp="${out}.tmp"
               rsync_copy "$d" "$tmp"
               patch_version_manifest "$tmp" "$pkg" "$suffix" "$ver"
               if ! diff -qr "$tmp" "$out" >/dev/null 2>&1; then
-                rm -rf "$out"
-                mv "$tmp" "$out"
-                echo "Updated version dir: $out"
-                changed=1
+              rm -rf "$out"
+              mv "$tmp" "$out"
+              echo "Updated version dir: $out"
+              changed=1
               else
-                rm -rf "$tmp"
+              rm -rf "$tmp"
               fi
               if build_zip "$out" "$out/$pkg.zip"; then changed=1; fi
             done
