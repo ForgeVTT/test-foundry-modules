@@ -27,7 +27,6 @@ jobs:
           set -euo pipefail
 
           ensure_version() {
-            # $1 = dir to patch (contains module.json or system.json)
             local dir="$1"
             local json=""
             if [[ -f "$dir/module.json" ]]; then
@@ -133,3 +132,5 @@ jobs:
               git push
             fi
           else
+            echo "No ZIP changes to commit."
+          fi
