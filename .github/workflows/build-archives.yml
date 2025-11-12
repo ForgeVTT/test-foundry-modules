@@ -46,7 +46,10 @@ jobs:
           shopt -s nullglob
 
           for d in */ ; do
-            [[ "$d" = .* ]] && continue
+            case "$d" in
+              .*/|.git/|.github/|.vscode/|versions/) continue ;;
+            esac
+
             d="${d%/}"
             name="$(basename "$d")"
 
@@ -94,7 +97,7 @@ jobs:
             echo "No versioned copies changed."
           fi
 
-      - name: 📦 Build ZIPs (deterministic, only if changed)
+      - name: 📦 Build package ZIPs
         shell: bash
         run: |
           set -euo pipefail
@@ -103,9 +106,11 @@ jobs:
           shopt -s nullglob
 
           for d in */ ; do
-            [[ "$d" = .* ]] && continue
-            d="${d%/}"
+            case "$d" in
+              .*/|.git/|.github/|.vscode/|versions/) continue ;;
+            esac
 
+            d="${d%/}"
             zip_path="${d}/${d}.zip"
             tmp_zip="${zip_path}.tmp"
 
@@ -128,9 +133,52 @@ jobs:
             if git diff --cached --quiet; then
               echo "No ZIP changes to commit."
             else
-              git commit -m "chore: rebuild package ZIPs (automated)"
+              git commit -m "chore: Rebuild package ZIPs (automated)"
               git push
             fi
           else
             echo "No ZIP changes to commit."
+          fi
+
+      - name: 🗂️ Build versions ZIPs
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          changed=0
+          shopt -s nullglob
+
+          for vd in versions/*-v*/ ; do
+            [[ -d "$vd" ]] || continue
+            vd="${vd%/}"
+
+            name="$(basename "$vd")"              # e.g. test-module-v0
+            base="${name%*-v[0-9]*}"              # e.g. test-module (best-effort)
+            zip_path="${vd}/${name}.zip"          # e.g. versions/test-module-v0/test-module-v0.zip
+            tmp_zip="${zip_path}.tmp"
+
+            (cd "$vd" && zip -rqX "../${tmp_zip}" . -x "*.zip" -x "versions/*")
+
+            if [[ ! -f "$zip_path" ]] || ! cmp -s "$tmp_zip" "$zip_path"; then
+              mv "$tmp_zip" "$zip_path"
+              echo "Updated version ZIP: $zip_path"
+              changed=1
+            else
+              rm -f "$tmp_zip"
+              echo "No ZIP changes: $zip_path"
+            fi
+          done
+
+          if [[ "$changed" -eq 1 ]]; then
+            git config user.name "github-actions[bot]"
+            git config user.email "github-actions[bot]@users.noreply.github.com"
+            git add versions/*-v*/*.zip
+            if git diff --cached --quiet; then
+              echo "No versioned ZIP changes to commit."
+            else
+              git commit -m "chore: Rebuild versioned ZIPs (automated)"
+              git push
+            fi
+          else
+            echo "No versioned ZIP changes to commit."
           fi
