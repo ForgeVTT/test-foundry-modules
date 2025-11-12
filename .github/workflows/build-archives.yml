@@ -42,12 +42,12 @@ jobs:
           }
 
           changed=0
-          mkdir -p versions
+          mkdir -p .versions
           shopt -s nullglob
 
           for d in */ ; do
             case "$d" in
-              .*/|.git/|.github/|.vscode/|versions/) continue ;;
+              .*/|.git/|.github/|.vscode/|.versions/) continue ;;
             esac
 
             d="${d%/}"
@@ -59,14 +59,14 @@ jobs:
                 v2) export NEW_VERSION="2.0.1" ;;
               esac
 
-              out="versions/${name}-${suffix}"
+              out=".versions/${name}-${suffix}"
               tmp_out="${out}.tmp"
 
               rm -rf "$tmp_out"
               mkdir -p "$tmp_out"
               rsync -a --delete \
                 --exclude '*.zip' \
-                --exclude 'versions/' \
+                --exclude '.versions/' \
                 "${d}/" "$tmp_out/"
 
               ensure_version "$tmp_out"
@@ -86,7 +86,7 @@ jobs:
           if [[ "$changed" -eq 1 ]]; then
             git config user.name "github-actions[bot]"
             git config user.email "github-actions[bot]@users.noreply.github.com"
-            git add versions/
+            git add .versions/
             if git diff --cached --quiet; then
               echo "No versioned changes to commit."
             else
@@ -107,14 +107,14 @@ jobs:
 
           for d in */ ; do
             case "$d" in
-              .*/|.git/|.github/|.vscode/|versions/) continue ;;
+              .*/|.git/|.github/|.vscode/|.versions/) continue ;;
             esac
 
             d="${d%/}"
             zip_path="${d}/${d}.zip"
             tmp_zip="${zip_path}.tmp"
 
-            (cd "$d" && zip -rqX "../${tmp_zip}" . -x "*.zip" -x "versions/*")
+            (cd "$d" && zip -rqX "../${tmp_zip}" . -x "*.zip" -x ".versions/*")
 
             if [[ ! -f "$zip_path" ]] || ! cmp -s "$tmp_zip" "$zip_path"; then
               mv "$tmp_zip" "$zip_path"
@@ -140,23 +140,25 @@ jobs:
             echo "No ZIP changes to commit."
           fi
 
-      - name: 🗂️ Build versions ZIPs
+      - name: 🗂️ Build version ZIPs
         shell: bash
         run: |
           set -euo pipefail
-
-          changed=0
           shopt -s nullglob
 
-          for version_dir in versions/*-v*/ ; do
+          changed=0
+
+          for version_dir in .versions/*-v*/ ; do
             [[ -d "$version_dir" ]] || continue
             version_dir="${version_dir%/}"
 
-            name="$(basename "$version_dir")"
+            version_name="$(basename "$version_dir")"
+            name="${version_name%-v*}"
+
             zip_path="${version_dir}/${name}.zip"
             tmp_name="${name}.zip.tmp"
 
-            (cd "$version_dir" && zip -rqX "$tmp_name" . -x "*.zip" -x "versions/*")
+            (cd "$version_dir" && zip -rqX "$tmp_name" . -x "*.zip" -x ".versions/*")
 
             if [[ ! -f "$zip_path" ]] || ! cmp -s "$version_dir/$tmp_name" "$zip_path"; then
               mv "$version_dir/$tmp_name" "$zip_path"
@@ -171,7 +173,7 @@ jobs:
           if [[ "$changed" -eq 1 ]]; then
             git config user.name "github-actions[bot]"
             git config user.email "github-actions[bot]@users.noreply.github.com"
-            git add versions/*-v*/*.zip
+            git add .versions/*-v*/*.zip
             if git diff --cached --quiet; then
               echo "No versioned ZIP changes to commit."
             else
