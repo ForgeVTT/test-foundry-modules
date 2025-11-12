@@ -28,16 +28,31 @@ jobs:
 
           ensure_version() {
             local dir="$1"
+            local pkg="$2"
+            local suffix="$3"
+
             local json=""
+            local json_base=""
             if [[ -f "$dir/module.json" ]]; then
               json="$dir/module.json"
+              json_base="module.json"
             elif [[ -f "$dir/system.json" ]]; then
               json="$dir/system.json"
+              json_base="system.json"
             else
               return 0
             fi
+
+            export PKG_NAME="${pkg}"
+            export SUFFIX="${suffix}"
+            export JSON_FILE_BASENAME="${json_base}"
+
             local tmp="${json}.tmp"
-            jq -S '.version = env.NEW_VERSION' "$json" > "$tmp"
+            jq -S '
+              .version  = env.NEW_VERSION
+              | .download = ("https://raw.githubusercontent.com/" + env.GITHUB_REPOSITORY + "/main/.versions/" + env.PKG_NAME + "-" + env.SUFFIX + "/" + env.PKG_NAME + ".zip")
+              | .manifest = ("https://raw.githubusercontent.com/" + env.GITHUB_REPOSITORY + "/main/.versions/" + env.PKG_NAME + "-" + env.SUFFIX + "/" + env.JSON_FILE_BASENAME)
+            ' "$json" > "$tmp"
             mv "$tmp" "$json"
           }
 
@@ -69,7 +84,7 @@ jobs:
                 --exclude '.versions/' \
                 "${d}/" "$tmp_out/"
 
-              ensure_version "$tmp_out"
+              ensure_version "$tmp_out" "$name" "$suffix"
 
               if ! diff -qr "$tmp_out" "$out" > /dev/null 2>&1; then
                 rm -rf "$out"
