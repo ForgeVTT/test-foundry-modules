@@ -1,18 +1,18 @@
 {
-  "id": "test-system-id",
-  "title": "Test System Title",
-  "description": "An empty system with a minimal manifest.",
   "authors": [
     {
       "name": "System Author Name"
     }
   ],
-  "url": "https://github.com/ForgeVTT/test-foundry-modules",
-  "manifest": "https://raw.githubusercontent.com/ForgeVTT/test-foundry-modules/main/test-system/system.json",
-  "download": "https://raw.githubusercontent.com/ForgeVTT/test-foundry-modules/main/test-system/test-system.zip",
-  "version": "1.0.0",
   "compatibility": {
     "minimum": "11",
     "verified": "12"
-  }
+  },
+  "description": "An empty system with a minimal manifest.",
+  "download": "https://raw.githubusercontent.com/ForgeVTT/test-foundry-modules/main/test-system/test-system.zip",
+  "id": "test-system-id",
+  "manifest": "https://raw.githubusercontent.com/ForgeVTT/test-foundry-modules/main/test-system/system.json",
+  "title": "Test System Title",
+  "url": "https://github.com/ForgeVTT/test-foundry-modules",
+  "version": "1.0.1"
 }

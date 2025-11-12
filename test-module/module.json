@@ -1,18 +1,18 @@
 {
-  "id": "test-module-id",
-  "title": "Test Module Title",
-  "description": "An empty module with a minimal manifest.",
   "authors": [
     {
       "name": "Module Author Name"
     }
   ],
-  "url": "https://github.com/ForgeVTT/test-foundry-modules",
-  "manifest": "https://raw.githubusercontent.com/ForgeVTT/test-foundry-modules/main/test-module/module.json",
-  "download": "https://raw.githubusercontent.com/ForgeVTT/test-foundry-modules/main/test-module/test-module.zip",
-  "version": "1.0.0",
   "compatibility": {
     "minimum": "11",
     "verified": "12"
-  }
+  },
+  "description": "An empty module with a minimal manifest.",
+  "download": "https://raw.githubusercontent.com/ForgeVTT/test-foundry-modules/main/test-module/test-module.zip",
+  "id": "test-module-id",
+  "manifest": "https://raw.githubusercontent.com/ForgeVTT/test-foundry-modules/main/test-module/module.json",
+  "title": "Test Module Title",
+  "url": "https://github.com/ForgeVTT/test-foundry-modules",
+  "version": "1.0.1"
 }

@@ -1,18 +1,18 @@
 {
-  "id": "dlopen",
-  "title": "Conflict Custom Module",
-  "description": "A test module with an ID matching a Bazaar \"custom\" dependency module (`dlopen`).",
   "authors": [
     {
       "name": "Module Author Name"
     }
   ],
-  "url": "https://github.com/ForgeVTT/test-foundry-modules",
-  "manifest": "https://raw.githubusercontent.com/ForgeVTT/test-foundry-modules/main/conflict-id-custom/module.json",
-  "download": "https://raw.githubusercontent.com/ForgeVTT/test-foundry-modules/main/conflict-id-custom/conflict-id-custom.zip",
-  "version": "1.0.0",
   "compatibility": {
     "minimum": "11",
     "verified": "12"
-  }
+  },
+  "description": "A test module with an ID matching a Bazaar \"custom\" dependency module (`dlopen`).",
+  "download": "https://raw.githubusercontent.com/ForgeVTT/test-foundry-modules/main/conflict-id-custom/conflict-id-custom.zip",
+  "id": "dlopen",
+  "manifest": "https://raw.githubusercontent.com/ForgeVTT/test-foundry-modules/main/conflict-id-custom/module.json",
+  "title": "Conflict Custom Module",
+  "url": "https://github.com/ForgeVTT/test-foundry-modules",
+  "version": "1.0.1"
 }

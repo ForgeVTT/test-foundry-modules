@@ -1,31 +1,33 @@
 {
-  "id": "cross-import-system",
-  "title": "Cross Import System",
-  "description": "A system with cross-package relative imports.",
   "authors": [
     {
       "name": "System Author Name"
     }
   ],
-  "url": "https://github.com/ForgeVTT/test-foundry-modules",
-  "manifest": "https://raw.githubusercontent.com/ForgeVTT/test-foundry-modules/main/cross-import-system/system.json",
-  "download": "https://raw.githubusercontent.com/ForgeVTT/test-foundry-modules/main/cross-import-system/cross-import-system.zip",
-  "version": "1.0.0",
   "compatibility": {
     "minimum": "12",
     "verified": "13"
   },
-  "esmodules": ["esmodule.js"],
+  "description": "A system with cross-package relative imports.",
+  "download": "https://raw.githubusercontent.com/ForgeVTT/test-foundry-modules/main/cross-import-system/cross-import-system.zip",
+  "esmodules": [
+    "esmodule.js"
+  ],
+  "id": "cross-import-system",
+  "manifest": "https://raw.githubusercontent.com/ForgeVTT/test-foundry-modules/main/cross-import-system/system.json",
   "relationships": {
     "requires": [
       {
-        "id": "cross-import-module",
-        "type": "module",
-        "manifest": "https://raw.githubusercontent.com/ForgeVTT/test-foundry-modules/main/cross-import-module/module.json",
         "compatibility": {
           "verified": "1.0.0"
-        }
+        },
+        "id": "cross-import-module",
+        "manifest": "https://raw.githubusercontent.com/ForgeVTT/test-foundry-modules/main/cross-import-module/module.json",
+        "type": "module"
       }
     ]
-  }
+  },
+  "title": "Cross Import System",
+  "url": "https://github.com/ForgeVTT/test-foundry-modules",
+  "version": "1.0.1"
 }

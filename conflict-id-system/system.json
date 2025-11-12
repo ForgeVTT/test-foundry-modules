@@ -1,18 +1,18 @@
 {
-  "id": "dnd5e",
-  "title": "Conflict Name System",
-  "description": "A test system with an ID matching an existing Bazaar package name (`dnd5e`).",
   "authors": [
     {
       "name": "System Author Name"
     }
   ],
-  "url": "https://github.com/ForgeVTT/test-foundry-modules",
-  "manifest": "https://raw.githubusercontent.com/ForgeVTT/test-foundry-modules/main/conflict-id-system/system.json",
-  "download": "https://raw.githubusercontent.com/ForgeVTT/test-foundry-modules/main/conflict-id-system/conflict-id-system.zip",
-  "version": "1.0.0",
   "compatibility": {
     "minimum": "11",
     "verified": "12"
-  }
+  },
+  "description": "A test system with an ID matching an existing Bazaar package name (`dnd5e`).",
+  "download": "https://raw.githubusercontent.com/ForgeVTT/test-foundry-modules/main/conflict-id-system/conflict-id-system.zip",
+  "id": "dnd5e",
+  "manifest": "https://raw.githubusercontent.com/ForgeVTT/test-foundry-modules/main/conflict-id-system/system.json",
+  "title": "Conflict Name System",
+  "url": "https://github.com/ForgeVTT/test-foundry-modules",
+  "version": "1.0.1"
 }
