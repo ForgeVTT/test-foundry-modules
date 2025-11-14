@@ -36,8 +36,8 @@ ensure_version() {
     --arg json_base "$json_base" \
     '
       .version = $version
-      | .download = ("https://raw.githubusercontent.com/" + $repo + "/main/.versions/" + $pkg + "/" + $version + "/" + $pkg + ".zip")
-      | .manifest = ("https://raw.githubusercontent.com/" + $repo + "/main/.versions/" + $pkg + "/" + $version + "/" + $json_base)
+      | .download = ("https://raw.githubusercontent.com/" + $repo + "/refs/heads/main/.versions/" + $pkg + "/" + $version + "/" + $pkg + ".zip")
+      | .manifest = ("https://raw.githubusercontent.com/" + $repo + "/refs/heads/main/.versions/" + $pkg + "/" + $version + "/" + $json_base)
     ' "$json" > "$tmp"
   mv "$tmp" "$json"
 }
