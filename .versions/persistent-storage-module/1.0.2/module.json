@@ -1,0 +1,22 @@
+{
+  "authors": [
+    {
+      "name": "Module Author Name"
+    }
+  ],
+  "compatibility": {
+    "minimum": "12",
+    "verified": "13"
+  },
+  "description": "A module with persistent storage.",
+  "download": "https://raw.githubusercontent.com/ForgeVTT/test-foundry-modules/main/.versions/persistent-storage-module/1.0.2/persistent-storage-module.zip",
+  "esmodules": [
+    "esmodule.js"
+  ],
+  "id": "persistent-storage-module-id",
+  "manifest": "https://raw.githubusercontent.com/ForgeVTT/test-foundry-modules/main/.versions/persistent-storage-module/1.0.2/module.json",
+  "persistentStorage": true,
+  "title": "Persistent Storage Module",
+  "url": "https://github.com/ForgeVTT/test-foundry-modules",
+  "version": "1.0.2"
+}

@@ -1,0 +1,18 @@
+{
+  "authors": [
+    {
+      "name": "System Author Name"
+    }
+  ],
+  "compatibility": {
+    "minimum": "11",
+    "verified": "12"
+  },
+  "description": "An empty system with a minimal manifest.",
+  "download": "https://raw.githubusercontent.com/ForgeVTT/test-foundry-modules/main/.versions/test-system/0.0.3/test-system.zip",
+  "id": "test-system-id",
+  "manifest": "https://raw.githubusercontent.com/ForgeVTT/test-foundry-modules/main/.versions/test-system/0.0.3/system.json",
+  "title": "Test System Title",
+  "url": "https://github.com/ForgeVTT/test-foundry-modules",
+  "version": "0.0.3"
+}
