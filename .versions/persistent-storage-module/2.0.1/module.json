@@ -9,12 +9,12 @@
     "verified": "13"
   },
   "description": "A module with persistent storage.",
-  "download": "https://raw.githubusercontent.com/ForgeVTT/test-foundry-modules/main/.versions/persistent-storage-module/2.0.1/persistent-storage-module.zip",
+  "download": "https://raw.githubusercontent.com/ForgeVTT/test-foundry-modules/refs/heads/main/.versions/persistent-storage-module/2.0.1/persistent-storage-module.zip",
   "esmodules": [
     "esmodule.js"
   ],
   "id": "persistent-storage-module-id",
-  "manifest": "https://raw.githubusercontent.com/ForgeVTT/test-foundry-modules/main/.versions/persistent-storage-module/2.0.1/module.json",
+  "manifest": "https://raw.githubusercontent.com/ForgeVTT/test-foundry-modules/refs/heads/main/.versions/persistent-storage-module/2.0.1/module.json",
   "persistentStorage": true,
   "title": "Persistent Storage Module",
   "url": "https://github.com/ForgeVTT/test-foundry-modules",
