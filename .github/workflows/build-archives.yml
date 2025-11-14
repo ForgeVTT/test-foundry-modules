@@ -50,7 +50,6 @@ jobs:
         run: |
           set -euo pipefail
 
-          # Show status for debugging (doesn't affect logic)
           git status --porcelain
 
           if git status --porcelain | grep .; then
@@ -59,7 +58,7 @@ jobs:
             git config user.name "github-actions[bot]"
             git config user.email "github-actions[bot]@users.noreply.github.com"
 
-            git add .versions/ */*.zip */module.json */system.json 2>/dev/null || true
+            git add -A
 
             if git diff --cached --quiet; then
               echo "No relevant changes to commit after add."
@@ -68,9 +67,7 @@ jobs:
 
             git commit -m "chore: Update packages and versioned copies (automated)"
 
-            # Try to rebase onto latest main to avoid push failures
-            git pull --rebase origin "$GITHUB_REF_NAME" || true
-            git push
+            git push --force-with-lease
           else
             echo "No changes to commit."
           fi
