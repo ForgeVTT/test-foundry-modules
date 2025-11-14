@@ -11,236 +11,66 @@ permissions:
 
 concurrency:
   group: build-zips-${{ github.ref }}
-  cancel-in-progress: false
+  cancel-in-progress: true
+
+env:
+  VERSION_V0: "0.0.3"
+  VERSION_V1: "1.0.2"
+  VERSION_V2: "2.0.1"
 
 jobs:
   build:
     name: 📦 Build package versions
     runs-on: ubuntu-latest
+    if: github.actor != 'github-actions[bot]'
+
     steps:
       - name: ⬇️ Checkout
         uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: 🔧 Make package script executable
+        run: chmod +x .github/scripts/packages.sh
 
       - name: 🧩 Create versioned copies
         shell: bash
-        run: |
-          set -euo pipefail
+        run: .github/scripts/packages.sh create-versioned-copies
 
-          ensure_version() {
-            local dir="$1"
-            local pkg="$2"
-            local suffix="$3"
-
-            local json=""
-            local json_base=""
-            if [[ -f "$dir/module.json" ]]; then
-              json="$dir/module.json"
-              json_base="module.json"
-            elif [[ -f "$dir/system.json" ]]; then
-              json="$dir/system.json"
-              json_base="system.json"
-            else
-              return 0
-            fi
-
-            export PKG_NAME="${pkg}"
-            export SUFFIX="${suffix}"
-            export JSON_FILE_BASENAME="${json_base}"
-
-            local tmp="${json}.tmp"
-            jq -S '
-              .version  = env.NEW_VERSION
-              | .download = ("https://raw.githubusercontent.com/" + env.GITHUB_REPOSITORY + "/main/.versions/" + env.PKG_NAME + "-" + env.SUFFIX + "/" + env.PKG_NAME + ".zip")
-              | .manifest = ("https://raw.githubusercontent.com/" + env.GITHUB_REPOSITORY + "/main/.versions/" + env.PKG_NAME + "-" + env.SUFFIX + "/" + env.JSON_FILE_BASENAME)
-            ' "$json" > "$tmp"
-            mv "$tmp" "$json"
-          }
-
-          changed=0
-          mkdir -p .versions
-          shopt -s nullglob
-
-          for d in */ ; do
-            case "$d" in
-              .*/|.git/|.github/|.vscode/|.versions/) continue ;;
-            esac
-
-            d="${d%/}"
-            name="$(basename "$d")"
-
-            for suffix in v0 v2; do
-              case "$suffix" in
-                v0) export NEW_VERSION="0.0.1" ;;
-                v2) export NEW_VERSION="2.0.1" ;;
-              esac
-
-              out=".versions/${name}-${suffix}"
-              tmp_out="${out}.tmp"
-
-              rm -rf "$tmp_out"
-              mkdir -p "$tmp_out"
-              rsync -a --delete \
-                --exclude '*.zip' \
-                --exclude '.versions/' \
-                "${d}/" "$tmp_out/"
-
-              ensure_version "$tmp_out" "$name" "$suffix"
-
-              if ! diff -qr "$tmp_out" "$out" > /dev/null 2>&1; then
-                rm -rf "$out"
-                mv "$tmp_out" "$out"
-                echo "Updated: $out"
-                changed=1
-              else
-                rm -rf "$tmp_out"
-                echo "No changes: $out"
-              fi
-            done
-          done
-
-          if [[ "$changed" -eq 1 ]]; then
-            git config user.name "github-actions[bot]"
-            git config user.email "github-actions[bot]@users.noreply.github.com"
-            git add .versions/
-            if git diff --cached --quiet; then
-              echo "No versioned changes to commit."
-            else
-              git commit -m "chore: Update versioned copies (automated)"
-              git push
-            fi
-          else
-            echo "No versioned copies changed."
-          fi
-
-      - name: 📦 Build package ZIPs
+      - name: 📦 Build main package ZIPs
         shell: bash
-        run: |
-          set -euo pipefail
-
-          ensure_main_json() {
-            local dir="$1"
-            local pkg="$2"
-
-            local json=""
-            local json_base=""
-            if [[ -f "$dir/module.json" ]]; then
-              json="$dir/module.json"
-              json_base="module.json"
-            elif [[ -f "$dir/system.json" ]]; then
-              json="$dir/system.json"
-              json_base="system.json"
-            else
-              return 0
-            fi
-
-            export NEW_MAIN_VERSION="1.0.1"
-            export PKG_NAME="${pkg}"
-            export JSON_FILE_BASENAME="${json_base}"
-
-            local tmp="${json}.tmp"
-            jq -S '
-              .version  = env.NEW_MAIN_VERSION
-              | .download = ("https://raw.githubusercontent.com/" + env.GITHUB_REPOSITORY + "/main/" + env.PKG_NAME + "/" + env.PKG_NAME + ".zip")
-              | .manifest = ("https://raw.githubusercontent.com/" + env.GITHUB_REPOSITORY + "/main/" + env.PKG_NAME + "/" + env.JSON_FILE_BASENAME)
-            ' "$json" > "$tmp"
-            if ! cmp -s "$tmp" "$json"; then
-              mv "$tmp" "$json"
-              echo "Patched JSON for $pkg"
-            else
-              rm -f "$tmp"
-            fi
-          }
-
-          changed=0
-          shopt -s nullglob
-
-          for d in */ ; do
-            case "$d" in
-              .*/|.git/|.github/|.vscode/|.versions/) continue ;;
-            esac
-
-            d="${d%/}"
-            pkg="${d}"
-
-            ensure_main_json "$d" "$pkg"
-
-            zip_path="${d}/${d}.zip"
-            tmp_zip="${zip_path}.tmp"
-
-            (cd "$d" && zip -rqX "../${tmp_zip}" . -x "*.zip" -x ".versions/*")
-
-            if [[ ! -f "$zip_path" ]] || ! cmp -s "$tmp_zip" "$zip_path"; then
-              mv "$tmp_zip" "$zip_path"
-              echo "Updated ZIP: $zip_path"
-              changed=1
-            else
-              rm -f "$tmp_zip"
-              echo "No ZIP changes: $zip_path"
-            fi
-          done
-
-          if [[ "$changed" -eq 1 ]]; then
-            git config user.name "github-actions[bot]"
-            git config user.email "github-actions[bot]@users.noreply.github.com"
-            git add */*.zip */module.json */system.json 2>/dev/null || true
-            if git diff --cached --quiet; then
-              echo "No ZIP or JSON changes to commit."
-            else
-              git commit -m "chore: Rebuild packages (automated)"
-              git push
-            fi
-          else
-            git add */module.json */system.json 2>/dev/null || true
-            if git diff --cached --quiet; then
-              echo "No changes to commit."
-            else
-              git config user.name "github-actions[bot]"
-              git config user.email "github-actions[bot]@users.noreply.github.com"
-              git commit -m "chore: Update main manifests (automated)"
-              git push
-            fi
-          fi
+        run: .github/scripts/packages.sh build-main-zips
 
       - name: 🗂️ Build version ZIPs
         shell: bash
+        run: .github/scripts/packages.sh build-version-zips
+
+      - name: ✅ Commit & push changes (if any)
+        shell: bash
         run: |
           set -euo pipefail
-          shopt -s nullglob
 
-          changed=0
+          # Show status for debugging (doesn't affect logic)
+          git status --porcelain
 
-          for version_dir in .versions/*-v*/ ; do
-            [[ -d "$version_dir" ]] || continue
-            version_dir="${version_dir%/}"
+          if git status --porcelain | grep .; then
+            echo "Changes detected, committing..."
 
-            version_name="$(basename "$version_dir")"
-            name="${version_name%-v*}"
-
-            zip_path="${version_dir}/${name}.zip"
-            tmp_name="${name}.zip.tmp"
-
-            (cd "$version_dir" && zip -rqX "$tmp_name" . -x "*.zip" -x ".versions/*")
-
-            if [[ ! -f "$zip_path" ]] || ! cmp -s "$version_dir/$tmp_name" "$zip_path"; then
-              mv "$version_dir/$tmp_name" "$zip_path"
-              echo "Updated version ZIP: $zip_path"
-              changed=1
-            else
-              rm -f "$version_dir/$tmp_name"
-              echo "No ZIP changes: $zip_path"
-            fi
-          done
-
-          if [[ "$changed" -eq 1 ]]; then
             git config user.name "github-actions[bot]"
             git config user.email "github-actions[bot]@users.noreply.github.com"
-            git add .versions/*-v*/*.zip
+
+            git add .versions/ */*.zip */module.json */system.json 2>/dev/null || true
+
             if git diff --cached --quiet; then
-              echo "No versioned ZIP changes to commit."
-            else
-              git commit -m "chore: Rebuild versioned ZIPs (automated)"
-              git push
+              echo "No relevant changes to commit after add."
+              exit 0
             fi
+
+            git commit -m "chore: Update packages and versioned copies (automated)"
+
+            # Try to rebase onto latest main to avoid push failures
+            git pull --rebase origin "$GITHUB_REF_NAME" || true
+            git push
           else
-            echo "No versioned ZIP changes to commit."
+            echo "No changes to commit."
           fi

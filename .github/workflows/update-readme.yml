@@ -5,59 +5,76 @@ on:
     branches:
       - main
 
+permissions:
+  contents: write
+
+concurrency:
+  group: update-readme-${{ github.ref }}
+  cancel-in-progress: true
+
+env:
+  VERSION_V0: "0.0.3"
+  VERSION_V1: "1.0.2"
+  VERSION_V2: "2.0.1"
+
 jobs:
   update-readme:
     name: 📕 Update README.md
     runs-on: ubuntu-latest
+    if: github.actor != 'github-actions[bot]'
+
     steps:
       - name: ⬇️ Checkout
         uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
 
       - name: 📖 Update README.md
+        shell: bash
         run: |
           set -euo pipefail
 
           echo "# Test Packages" > README.md
           echo "" >> README.md
 
-          for file in */module.json; do
-              if [ -f "$file" ]; then
-                  title=$(jq -r '.title' "$file")
-                  description=$(jq -r '.description' "$file")
-                  module=$(dirname "$file")
-                  url="https://raw.githubusercontent.com/${GITHUB_REPOSITORY}/main/${module}/module.json"
+          write_entries() {
+            local pattern="$1"
+            local type="$2"
 
-                  echo "## $title" >> README.md
-                  echo "" >> README.md
-                  echo "$description" >> README.md
-                  echo "" >> README.md
-                  echo "$url" >> README.md
-                  echo "" >> README.md
-              fi
-          done
+            # Use sorted order for stable diffs
+            for file in $(printf '%s\n' $pattern 2>/dev/null | sort); do
+              [ -f "$file" ] || continue
 
-          for file in */system.json; do
-              if [ -f "$file" ]; then
-                  title=$(jq -r '.title' "$file")
-                  description=$(jq -r '.description' "$file")
-                  system=$(dirname "$file")
-                  url="https://raw.githubusercontent.com/${GITHUB_REPOSITORY}/main/${system}/system.json"
+              title=$(jq -r '.title' "$file")
+              description=$(jq -r '.description' "$file")
+              dir=$(dirname "$file")
 
-                  echo "## $title" >> README.md
-                  echo "" >> README.md
-                  echo "$description" >> README.md
-                  echo "" >> README.md
-                  echo "$url" >> README.md
-                  echo "" >> README.md
-              fi
-          done
+              url="https://raw.githubusercontent.com/${GITHUB_REPOSITORY}/main/${dir}/${type}.json"
+
+              url_v0="https://raw.githubusercontent.com/${GITHUB_REPOSITORY}/refs/heads/main/.versions/${dir}/${VERSION_V0}/${type}.json"
+              url_v1="https://raw.githubusercontent.com/${GITHUB_REPOSITORY}/refs/heads/main/.versions/${dir}/${VERSION_V1}/${type}.json"
+              url_v2="https://raw.githubusercontent.com/${GITHUB_REPOSITORY}/refs/heads/main/.versions/${dir}/${VERSION_V2}/${type}.json"
+
+              echo "## $title" >> README.md
+              echo "" >> README.md
+              echo "$description" >> README.md
+              echo "" >> README.md
+              echo "$url ([${VERSION_V0}]($url_v0), [${VERSION_V1}]($url_v1), [${VERSION_V2}]($url_v2))" >> README.md
+              echo "" >> README.md
+            done
+          }
+
+          write_entries "*/module.json" "module"
+          write_entries "*/system.json" "system"
 
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
           git add README.md
+
           if git diff --cached --quiet; then
             echo "No README.md changes to commit."
           else
             git commit -m "chore: Update the list of packages in README.md (automated)"
+            git pull --rebase origin "$GITHUB_REF_NAME" || true
             git push
           fi
